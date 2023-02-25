@@ -55,7 +55,7 @@ def selfask(inp: str, openai: Backend, google: Backend) -> str:
     prompt1 = SelfAsk(openai)
     prompt2 = SimplePrompt(google)
     suffix = ""
-    for i in range(3):
+    for _ in range(3):
         out = prompt1(dict(input=inp, suffix=suffix, agent_scratchpad=True))
 
         if isinstance(out.state, FinalState):

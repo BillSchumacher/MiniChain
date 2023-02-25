@@ -31,16 +31,14 @@ class JinjaPrompt(Prompt[Mapping[str, Any], Output]):
     stop_template = ""
 
     def render_prompt_html(self, inp: Mapping[str, Any], prompt: str) -> HTML:
-        n = {}
-        for k, v in inp.items():
-            if isinstance(v, str):
-                n[k] = f"<div style='color:red'>{v}</div>"
-            else:
-                n[k] = v
+        n = {
+            k: f"<div style='color:red'>{v}</div>" if isinstance(v, str) else v
+            for k, v in inp.items()
+        }
         return HTML(self.prompt(n).prompt.replace("\n", "<br>"))
 
     def parse(self, result: str, inp: Mapping[str, Any]) -> Output:
-        return str(result)  # type: ignore
+        return result
 
     def prompt(self, kwargs: Mapping[str, Any]) -> Request:
         if self.template_file:
