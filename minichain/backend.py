@@ -84,8 +84,7 @@ class Python(Backend):
         f = StringIO()
         with redirect_stdout(f):
             exec(request.prompt)
-        s = f.getvalue()
-        return s
+        return f.getvalue()
 
 
 class BashProcess(Backend):
@@ -107,9 +106,7 @@ class BashProcess(Backend):
                 stderr=subprocess.STDOUT,
             ).stdout.decode()
         except subprocess.CalledProcessError as error:
-            if self.return_err_output:
-                return str(error.stdout.decode())
-            return str(error)
+            return str(error.stdout.decode()) if self.return_err_output else str(error)
         if self.strip_newlines:
             output = output.strip()
         return output

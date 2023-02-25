@@ -74,10 +74,7 @@ class Prompt(Generic[Input, Output]):
     def _prompt(self, inp: Input) -> Request:
         with start_action(action_type="Input Function", input=inp):
             r = self.prompt(inp)
-            if isinstance(r, str):
-                return Request(r)
-            else:
-                return r
+            return Request(r) if isinstance(r, str) else r
 
     def __call__(self, inp: Input) -> Output:
         assert self.backend is not None
